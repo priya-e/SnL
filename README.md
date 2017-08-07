@@ -1,2 +1,2 @@
 # SnL
-![snl](https://drive.google.com/file/d/0B_xXSaeHVqoKYW9NR2ZZWTQyNTg/view)
+![snl](https://raw.githubusercontent.com/priya-e/SnL/master/snl_screenshot.png)
