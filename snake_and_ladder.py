@@ -3,6 +3,8 @@ import time
 import os
 from termcolor import colored
 
+game_log = []
+
 class Player(object):
     def __init__(self,initial,position):
         self.initial = initial
@@ -16,14 +18,28 @@ class Player(object):
             print 'Invalid Dice roll!'
         else:
             self.position = number + self.position
-        #TODO: follow snakes and ladders
-        print self.initial,"position", self.position
+        self.follow_snake_and_ladder()
+        position_log = self.initial + " position " + str(self.position)
+        game_log.append(position_log)
         
     def is_winner(self):
         if self.position == 100:
             return True
         else:
             return False
+
+    def follow_snake_and_ladder(self):
+        while self.position in snake or self.position in ladder:
+            if self.position in snake:
+                position_log = 'Snake at '+ str(self.position) +' snake to ' + str(snake[self.position])
+                self.position = snake[self.position]
+                game_log.append(position_log)
+            else:
+                position_log = 'Ladder at '+ str(self.position) +' Ladder to ' + str(ladder[self.position])
+                self.position = ladder[self.position]
+                game_log.append(position_log)
+
+            
 
 
 matrix = range(1,101) # Defining list of 100 elements starting from 1-100
@@ -77,7 +93,6 @@ def get_player_cell(row, col):
         player_cell_output = player_cell_output + player2.initial
     return a + player_cell_output.center(14, ' ')
 
-
 def print_player_row(row):
     output =''
     if row%2==1:
@@ -115,6 +130,11 @@ def print_bottom_line():
     #this prints border line |,______________| * 10
     print '{0}{1}'.format(a, b)
     
+def log_last_5_moves():
+    print 'Last 5 moves'
+    for move in game_log[-5:]:
+        print move
+
 
 #Printing snake & Ladder Board
 def print_board():
@@ -127,7 +147,7 @@ def print_board():
         print_player_row(row)
         print_snake_ladder_row(row)
         print_bottom_line()
-
+    
 def dice_roll():
     dice = random.randint(1,6)
     return dice
@@ -142,6 +162,7 @@ def flip():
 def game():
     while True:
         print_board()
+        log_last_5_moves()
         current_player[0].play()
         print_board()
         if current_player[0].is_winner():
